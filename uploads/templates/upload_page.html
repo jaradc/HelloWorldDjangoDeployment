@@ -20,6 +20,21 @@
       <input type="submit">
     </form>
   </div>
+
+  <div class="songs m-4">
+  {% if audiofiles %}
+    {% for audiofile in audiofiles %}
+      <div class="m-2">
+        <audio controls>
+          <source src="{{ audiofile.upload.url }}" type="audio/wav">
+        </audio>
+      </div>
+    {% endfor %}
+  {% else %}
+    <p>No audio files uploaded. Upload one above!</p>
+  {% endif %}
+  </div>
+
 {% endblock content %}
 
 {% block extra_javascript %}

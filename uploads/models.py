@@ -3,7 +3,7 @@ from django.db import models
 # Create your models here.
 class FileUpload(models.Model):
     upload_at = models.DateTimeField(auto_now_add=True)
-    upload = models.FileField()
+    upload = models.FileField(upload_to="music")
 
     def __str__(self):
         return self.upload.name
