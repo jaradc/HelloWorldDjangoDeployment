@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block page_title %}Let's Upload!{% endblock page_title %}
+
+{% block extra_stylesheets %}
+  <link rel="stylesheet" href="{% static 'uploads/css/uploads.css' %}">
+{% endblock extra_stylesheets %}
+
+
+{% block content %}
+  <h1 class="mt-2"><i class="fas fa-upload" aria-hidden="true"></i> <u>Upload file</u></h1>
+
+  <div>{% if message %}<p class="system-message alert alert-success">{{ message }}</p>{% endif %}</div>
+
+  <div class="form-container">
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <input type="submit">
+    </form>
+  </div>
+{% endblock content %}
+
+{% block extra_javascript %}
+  <script src="{% static "uploads/js/scripts.js" %}"></script>
+{% endblock extra_javascript %}

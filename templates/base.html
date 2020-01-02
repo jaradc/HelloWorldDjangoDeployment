@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{% load static %}
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="My project I am deploying!">
+  <meta name="author" content="Jarad Collier">
+  <link rel="icon" href="{% static 'helloworld/img/favicon.ico' %}">
+
+  <title>{% block page_title %}{% endblock page_title %}</title>
+
+  <!-- Bootstrap 4 core CSS -->
+  <link rel="stylesheet" href="{% static 'helloworld/css/bootstrap.min.css' %}">
+  <!-- Font Awesome 5 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.min.css">
+  <!-- Custom css files -->
+  <link rel="stylesheet" href="{% static 'helloworld/css/base.css' %}">
+  {% block extra_stylesheets %}{% endblock extra_stylesheets %}
+</head>
+
+<body>
+
+{% include 'nav.html' %}
+<div class="container">
+  {% block content %}
+  {% endblock content %}
+</div>
+
+<script src="{% static 'helloworld/js/jquery-3.4.1.min.js' %}"></script>
+<script src="{% static 'helloworld/js/popper.js' %}"></script>
+<script src="{% static 'helloworld/js/bootstrap.min.js' %}"></script>
+{% block extra_javascript %}{% endblock extra_javascript %}
+</body>
+
+</html>
