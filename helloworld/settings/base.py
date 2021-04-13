@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 # print(BASE_DIR) == C:\Users\Jarad\Documents\PyCharm\helloworld\src
 
 
@@ -21,19 +21,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ['DJANGO_SECRET_KEY']
+SECRET_KEY = None
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ['DJANGO_DEBUG_STATE'] == "TRUE":
-    DEBUG = True
-elif os.environ['DJANGO_DEBUG_STATE'] == "FALSE":
-    DEBUG = False
-else:
-    raise Exception("Debug state must be either TRUE or FALSE."
-                    "For whatever reason, it is currently neither!")
+DEBUG = None
 
 # https://docs.djangoproject.com/en/2.2/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = os.environ['DJANGO_ALLOWED_HOST'].split(',')
+ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
@@ -86,22 +80,10 @@ WSGI_APPLICATION = 'helloworld.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ['DATABASE_NAME'],
-        'USER': os.environ['DATABASE_USER'],
-        'PASSWORD': os.environ['DATABASE_PASSWORD'],
-        'HOST': os.environ['DATABASE_HOST'],
-        'PORT': os.environ['DATABASE_PORT'],
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -138,47 +120,3 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
-
-if DEBUG:
-    STATIC_URL = '/static/'
-    STATIC_ROOT = os.path.join(BASE_DIR, 'static_cdn')
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static')
-    ]
-
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media_cdn')
-else:
-    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
-    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
-
-    AWS_FILE_EXPIRE = 200
-    AWS_PRELOAD_METADATA = True
-    AWS_QUERYSTRING_AUTH = True
-    AWS_DEFAULT_ACL = None
-
-    DEFAULT_FILE_STORAGE = 'helloworld.storage_utils.MediaRootS3BotoStorage'
-    STATICFILES_STORAGE = 'helloworld.storage_utils.StaticRootS3BotoStorage'
-
-    AWS_STORAGE_BUCKET_NAME = os.environ['AWS_STORAGE_BUCKET_NAME']
-    S3DIRECT_REGION = 'us-west-2'
-    S3_URL = '//%s.s3.amazonaws.com/' % AWS_STORAGE_BUCKET_NAME
-    MEDIA_URL = '//%s.s3.amazonaws.com/media/' % AWS_STORAGE_BUCKET_NAME
-    MEDIA_ROOT = MEDIA_URL
-    STATIC_URL = S3_URL + 'static/'
-    ADMIN_MEDIA_PREFIX = STATIC_URL + 'admin/'
-
-    STATICFILES_DIRS = [
-        os.path.join(BASE_DIR, 'static')
-    ]
-
-    import datetime
-
-    two_months = datetime.timedelta(days=61)
-    date_two_months_later = datetime.date.today() + two_months
-    expires = date_two_months_later.strftime("%A, %d %B %Y 20:00:00 GMT")
-
-    AWS_HEADERS = {
-        'Expires': expires,
-        'Cache-Control': 'max-age=%d' % (int(two_months.total_seconds()),),
-    }
