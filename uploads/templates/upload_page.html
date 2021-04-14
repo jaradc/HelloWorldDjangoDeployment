@@ -24,10 +24,11 @@
   <div class="songs m-4">
   {% if audiofiles %}
     {% for audiofile in audiofiles %}
-      <div class="m-2">
+      <div class="d-flex align-items-center m-2" id="track-{{ audiofile.pk }}-div">
         <audio controls>
           <source src="{{ audiofile.upload.url }}" type="audio/wav">
         </audio>
+        <button class="btn btn-sm btn-outline-dark ml-3 delete-btn" id="track-{{ audiofile.pk }}">X</button>
       </div>
     {% endfor %}
   {% else %}
@@ -39,4 +40,28 @@
 
 {% block extra_javascript %}
   <script src="{% static "uploads/js/scripts.js" %}"></script>
+  <script>
+    $('.delete-btn').on('click', function() {
+        const trackId = parseInt($(this).attr('id').replace("track-", ""));
+        $.ajax({
+            url: "{% url 'uploads:ajax_delete' %}",
+            headers:{
+                "X-CSRFToken": "{{ csrf_token }}"
+            },
+            type: "POST",
+            data: {
+                "track_id": trackId,
+            },
+            dataType: 'json',
+            success: function(response) {
+                console.log(trackId + 'deleted.');
+                $(`#track-${trackId}-div`).remove();
+            },
+            error: function(response) {
+                console.log('ERRPR');
+                console.log(response.responseText);
+            }
+        })
+    })
+  </script>
 {% endblock extra_javascript %}

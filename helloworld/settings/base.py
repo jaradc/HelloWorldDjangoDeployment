@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'uploads.apps.UploadsConfig',
 
     'storages',
+    'celery',
+    'django_celery_results',
+    'django_cleanup.apps.CleanupConfig',
 ]
 
 MIDDLEWARE = [
