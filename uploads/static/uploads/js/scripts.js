@@ -29,6 +29,27 @@ $('.delete-btn').on('click', function () {
     })
 })
 
+function updateStatus(task_id, status) {
+    $.ajax({
+        url: 'ajax/update/',
+        headers: {
+            "X-CSRFToken": csrfMiddlewareToken,
+        },
+        type: "POST",
+        data: {
+            "task_id": task_id,
+            "status": status,
+        },
+        dataType: 'json',
+        success: function (response) {
+            console.log(response);
+        },
+        error: function (response) {
+            console.log(response.responseText);
+        }
+    })
+}
+
 $(function () {
     $('div', '.songs').each(function (index, element) {
         const taskId = $(element).data('task-id');
@@ -45,6 +66,7 @@ $(function () {
                         status.text(response.state + ' : ' + step);
                         if (response.state === "SUCCESS") {
                             status.text(response.state);
+                            updateStatus(taskId, response.state);
                             clearInterval(interval);
                         }
                     }

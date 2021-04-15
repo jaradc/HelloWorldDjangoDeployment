@@ -31,6 +31,12 @@ def ajax_delete(request):
     FileUpload.objects.get(id=track_id).delete()
     return JsonResponse({'message': 'success'})
 
+def ajax_update(request):
+    task_id = request.POST.get('task_id')
+    status = request.POST.get('status')
+    FileUpload.objects.filter(task_id=task_id).update(status=status)
+    return JsonResponse({'message': 'success'})
+
 def ajax_get_progress(request, task_id):
     result = AsyncResult(task_id)
     response_data = {
