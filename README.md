@@ -1,1 +1,5 @@
-# Let's Deploy Django in cPanel!
+# Sample Django Project
+
+ - image upload
+ - ajax image delete
+ - celery task (redis broker)
